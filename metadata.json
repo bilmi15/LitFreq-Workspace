@@ -1,0 +1,6 @@
+{
+  "name": "Literary Word Frequency & Concordance Analyzer",
+  "description": "An interactive digital humanities workbench for English Literature students to perform word frequency counting, lemmatized suffix stemming, KWIC concordance search, and generate full APA 7th academic reports answering terminal exam questions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
