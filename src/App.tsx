@@ -5,10 +5,13 @@
 
 import React, { useState } from "react";
 import CorpusAnalyzer from "./components/CorpusAnalyzer";
+import BookChapterDraft from "./components/BookChapterDraft";
 import { PreloadedPoem, WordFrequency, ConcordanceLine } from "./types";
-import { Activity, Layers, Award, GraduationCap } from "lucide-react";
+import { Activity, Layers, Award, GraduationCap, ClipboardList, PenTool } from "lucide-react";
 
 export default function App() {
+  const [activeWorkspace, setActiveWorkspace] = useState<"analyzer" | "draft">("analyzer");
+  
   // State synchronized from CorpusAnalyzer
   const [selectedPoem, setSelectedPoem] = useState<PreloadedPoem | null>(null);
   const [tokensCount, setTokensCount] = useState<number>(0);
@@ -100,19 +103,45 @@ export default function App() {
 
       {/* CORE WORKSPACE NAVIGATION & STATUS INDICATOR */}
       <div id="tab_navigation_bar" className="bg-natural-warm border-b border-natural-border sticky top-0 z-10 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-14">
-          <div className="flex items-center space-x-2">
-            <Layers className="w-4 h-4 text-natural-olive" />
-            <span className="text-xs font-extrabold tracking-wider uppercase text-natural-charcoal">Corpus Analysis Workspace</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center py-2 sm:py-0 sm:h-14 gap-2">
+          
+          <div className="flex items-center space-x-1 sm:space-x-2">
+            <button
+              id="btn_view_analyzer"
+              onClick={() => setActiveWorkspace("analyzer")}
+              className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg border transition-all flex items-center space-x-2 cursor-pointer ${
+                activeWorkspace === "analyzer"
+                  ? "bg-natural-olive text-white border-natural-olive shadow-sm"
+                  : "bg-white text-[#8A8471] border-natural-border hover:bg-natural-warm"
+              }`}
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>1. Corpus Analyst</span>
+            </button>
+
+            <button
+              id="btn_view_draft"
+              onClick={() => setActiveWorkspace("draft")}
+              className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg border transition-all flex items-center space-x-2 cursor-pointer ${
+                activeWorkspace === "draft"
+                  ? "bg-natural-olive text-white border-natural-olive shadow-sm"
+                  : "bg-white text-[#8A8471] border-natural-border hover:bg-natural-warm"
+              }`}
+            >
+              <ClipboardList className="w-3.5 h-3.5" />
+              <span>2. Book-Chapter Draft</span>
+            </button>
           </div>
 
           {/* Quick Realtime Corpus Stats pill on far edge of Tab bar */}
           {selectedPoem && (
-            <div id="quick_statusBar" className="hidden border border-natural-border sm:flex items-center space-x-2 bg-white py-1.5 px-3 rounded-full text-[10px] font-mono text-[#8A8471]">
+            <div id="quick_statusBar" className="hidden border border-natural-border md:flex items-center space-x-2 bg-white py-1.5 px-3 rounded-full text-[10px] font-mono text-[#8A8471]">
               <Activity className="w-3.5 h-3.5 text-natural-olive animate-pulse" />
               <span>Active: <span className="font-bold text-[#2C2A26]">{selectedPoem.title.split(":")[0]}</span></span>
               <span>&bull;</span>
               <span>Tokens: <span className="font-bold text-[#2C2A26]">{tokensCount}</span></span>
+              <span>&bull;</span>
+              <span>TTR: <span className="font-bold text-natural-terracotta">{(tokensCount > 0 ? (vocabDistinct / tokensCount) * 100 : 0).toFixed(1)}%</span></span>
               <span>&bull;</span>
               <span>Mood: <span className="font-bold text-natural-terracotta uppercase">{sentimentLabel}</span></span>
             </div>
@@ -123,13 +152,32 @@ export default function App() {
       {/* MAIN RENDER AREA FRAME */}
       <main id="workspace_viewport" className="flex-grow max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 w-full">
         <div className="space-y-4">
-          <div className="bg-white p-5 rounded-2xl border border-natural-border shadow-sm space-y-1.5 mb-2">
-            <h2 className="text-base font-extrabold text-[#2C2A26] font-serif">LitFreq Workspace</h2>
-            <p className="text-xs text-[#8A8471] leading-relaxed">
-              Analyze and inspect word counts, suffix stem variations, and Keyword-in-Context concordance alignments of standard poetry, short stories (cerpen), and classical novel excerpts.
-            </p>
-          </div>
-          <CorpusAnalyzer onAnalysisChange={handleAnalysisChange} />
+          {activeWorkspace === "analyzer" ? (
+            <>
+              <div className="bg-white p-5 rounded-2xl border border-natural-border shadow-sm space-y-1.5 mb-2">
+                <h2 className="text-base font-extrabold text-[#2C2A26] font-serif">LitFreq Workspace</h2>
+                <p className="text-xs text-[#8A8471] leading-relaxed">
+                  Analyze and inspect word counts, suffix stem variations, and Keyword-in-Context concordance alignments of standard poetry, short stories (cerpen), and classical novel excerpts.
+                </p>
+              </div>
+              <CorpusAnalyzer onAnalysisChange={handleAnalysisChange} />
+            </>
+          ) : (
+            <>
+              <div className="bg-white p-5 rounded-2xl border border-natural-border shadow-sm space-y-1.5 mb-2">
+                <h2 className="text-base font-extrabold text-[#2C2A26] font-serif">Book-Chapter Draft Companion</h2>
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                  <p className="text-xs text-[#8A8471] leading-relaxed max-w-3xl">
+                    This scholarly component compiles, structures, and synchronizes your calculations, word association clusters, text complexities, and Parts of Speech proportions into a comprehensive 10-chapter academic paper formulated under APA 7th standards.
+                  </p>
+                  <span className="text-[10px] font-mono shrink-0 bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full font-bold">
+                    &bull; Active Document
+                  </span>
+                </div>
+              </div>
+              <BookChapterDraft selectedPoem={selectedPoem} />
+            </>
+          )}
         </div>
       </main>
 

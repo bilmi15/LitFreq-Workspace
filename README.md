@@ -56,7 +56,7 @@ Kini Workspace Analisis Korpus telah diperluas ke dalam **6 Tab Workbench Akadem
 
 ### 2. Workspace Book-Chapter Draft Companion (Penyusunan Bab Buku)
 Menghubungkan seluruh data statistik, hitungan N-Gram, metriks keterbacaan, dan pembagian kelas kata sastra di tab pertama ke dalam **10 Bab Laporan Akademik Terstruktur (Lengkap standar APA 7th)** secara real-time:
-- **Bab 1:** Rencana desain, profil pengguna sasaran (*Amanda Putri*), dan rumusan masalah.
+- **Bab 1:** Rencana desain, profil pengguna sasaran (*Zahwa Adelia Putri Damanik*), dan rumusan masalah.
 - **Bab 2:** Landasan Teoretis (NLP, Tokenisasi, Corpus Linguistics) dan tabel rujukan akademis.
 - **Bab 3:** Karakteristik Dataset, etika hak cipta, dan langkah pra-pemrosesan teks.
 - **Bab 4:** Flowchart Arsitektur Sistem terlokalisasi.
